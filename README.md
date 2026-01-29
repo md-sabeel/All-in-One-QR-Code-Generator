@@ -12,7 +12,8 @@ All-in-One QR Code Generator using pure HTML, CSS & JavaScript with:
 All QR codes are technically text-based. Platforms like YouTube, Wi-Fi, UPI, WhatsApp, etc. are just formatted strings.
 This generator correctly handles real-world formats for popular types (Wi-Fi, WhatsApp, Email, Phone, SMS, Maps, UPI, Social links, Files, etc.).
 
-### Link https://md-sabeel.github.io/All-in-One-QR-Code-Generator/
+## Link https://md-sabeel.github.io/All-in-One-QR-Code-Generator/
 
-### Demo
+## Demo
 
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a6973c82-2bec-472f-a488-59f699c13a36" />
