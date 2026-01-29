@@ -1,53 +1,120 @@
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
+body {
+    margin: 0;
+    background: #f4f6f8;
+    color: #333;
+}
+
+/* NAVBAR */
+nav {
+    background: #0f172a;
+    color: #fff;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav h1 {
+    font-size: 18px;
+    margin: 0;
+}
+
+nav a {
+    color: #38bdf8;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* MAIN */
 .container {
-    background: white;
-    padding: 25px;
-    width: 320px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 h2 {
-    margin-bottom: 15px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-input, select {
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media(max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+select, input, textarea, button {
     width: 100%;
-    padding: 10px;
-    margin: 8px 0;
+    padding: 12px;
+    margin-top: 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 90px;
 }
 
 button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
+    background: #2563eb;
+    color: #fff;
     border: none;
-    background: #667eea;
-    color: white;
-    border-radius: 6px;
     cursor: pointer;
-    font-weight: bold;
+    margin-top: 15px;
 }
 
 button:hover {
-    background: #5563d6;
+    background: #1d4ed8;
 }
 
-#qr-box {
-    margin-top: 20px;
+.qr-box {
+    text-align: center;
+    padding: 20px;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
 }
 
-#qrcode img {
-    margin: auto;
+#qrcode {
+    margin: 20px auto;
+    width: 200px;
+    height: 200px;
+}
+
+.download-btn {
+    background: #16a34a;
+}
+
+.download-btn:hover {
+    background: #15803d;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 15px;
+    background: #0f172a;
+    color: #cbd5f5;
+    font-size: 13px;
+    margin-top: 40px;
+}
+
+footer a {
+    color: #38bdf8;
+    text-decoration: none;
 }
