@@ -2,37 +2,315 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WiFi QR Code Generator</title>
-    <link rel="stylesheet" href="style.css">
+    <title>All-in-One QR Code Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- QRCode Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        /* NAVBAR */
+        nav {
+            background: #0f172a;
+            color: #fff;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h1 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        nav a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* MAIN */
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media(max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        select, input, textarea, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        button {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .qr-box {
+            text-align: center;
+            padding: 20px;
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+        }
+
+        #qrcode {
+            margin: 20px auto;
+            width: 200px;
+            height: 200px;
+        }
+
+        .download-btn {
+            background: #16a34a;
+        }
+
+        .download-btn:hover {
+            background: #15803d;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #0f172a;
+            color: #cbd5f5;
+            font-size: 13px;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+    </style>
 </head>
+
 <body>
 
+<!-- NAVBAR -->
+<nav>
+    <h1>All-in-One QR Generator</h1>
+    <a href="https://github.com/md-sabeel" target="_blank">GitHub</a>
+</nav>
+
+<!-- MAIN -->
 <div class="container">
-    <h2>📶 WiFi QR Code Generator</h2>
+    <h2>Generate Any QR Code</h2>
 
-    <input type="text" id="ssid" placeholder="WiFi Name (SSID)" />
+    <div class="grid">
+        <!-- LEFT -->
+        <div>
+            <label>QR Type</label>
+            <select id="qrType">
+                <option value="url">URL / Link</option>
+                <option value="text">Text</option>
+                <option value="wifi">Wi-Fi</option>
+                <option value="email">E-mail</option>
+                <option value="phone">Phone Call</option>
+                <option value="sms">SMS</option>
+                <option value="whatsapp">WhatsApp</option>
+                <option value="upi">UPI Payment</option>
+                <option value="map">Google Map</option>
+                <option value="social">Social Media Link</option>
+                <option value="file">File / PDF / Image / Video</option>
+                <option value="calendar">Calendar Event</option>
+                <option value="custom">Custom URL</option>
+            </select>
 
-    <input type="password" id="password" placeholder="WiFi Password" />
+            <div id="inputs"></div>
 
-    <select id="security">
-        <option value="WPA">WPA / WPA2</option>
-        <option value="WEP">WEP</option>
-        <option value="">Open (No Password)</option>
-    </select>
+            <button onclick="generateQR()">Generate QR</button>
+        </div>
 
-    <button onclick="generateQR()">Generate QR</button>
-
-    <div id="qr-box">
-        <div id="qrcode"></div>
+        <!-- RIGHT -->
+        <div class="qr-box">
+            <h3>QR Preview</h3>
+            <div id="qrcode"></div>
+            <button class="download-btn" onclick="downloadQR()">Download QR</button>
+        </div>
     </div>
-
-    <button id="downloadBtn" onclick="downloadQR()" style="display:none;">
-        Download QR Code
-    </button>
 </div>
 
-<!-- QR Code Library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="script.js"></script>
+<!-- FOOTER -->
+<footer>
+    © 2026 • Built by <a href="https://github.com/md-sabeel" target="_blank">md-sabeel</a>
+</footer>
+
+<script>
+    const inputsDiv = document.getElementById("inputs");
+    const qrType = document.getElementById("qrType");
+    const qrCodeDiv = document.getElementById("qrcode");
+    let qr;
+
+    function renderInputs() {
+        let html = "";
+        switch (qrType.value) {
+            case "wifi":
+                html = `
+          <input id="ssid" placeholder="Wi-Fi Name (SSID)">
+          <input id="password" placeholder="Password">
+          <input id="security" placeholder="Security (WPA/WEP)">
+        `;
+                break;
+
+            case "email":
+                html = `
+          <input id="email" placeholder="Email Address">
+          <input id="subject" placeholder="Subject">
+          <textarea id="body" placeholder="Message"></textarea>
+        `;
+                break;
+
+            case "phone":
+                html = `<input id="phone" placeholder="Phone Number">`;
+                break;
+
+            case "sms":
+                html = `
+          <input id="smsNumber" placeholder="Phone Number">
+          <textarea id="smsMsg" placeholder="Message"></textarea>
+        `;
+                break;
+
+            case "whatsapp":
+                html = `
+          <input id="waNumber" placeholder="WhatsApp Number with country code">
+          <textarea id="waMsg" placeholder="Message"></textarea>
+        `;
+                break;
+
+            case "upi":
+                html = `
+          <input id="upiId" placeholder="UPI ID">
+          <input id="amount" placeholder="Amount">
+          <input id="note" placeholder="Note">
+        `;
+                break;
+
+            case "map":
+                html = `<input id="location" placeholder="Place / Address">`;
+                break;
+
+            case "calendar":
+                html = `
+          <input id="event" placeholder="Event Title">
+          <input id="date" placeholder="YYYYMMDD">
+        `;
+                break;
+
+            default:
+                html = `<textarea id="data" placeholder="Enter content here"></textarea>`;
+        }
+        inputsDiv.innerHTML = html;
+    }
+
+    qrType.addEventListener("change", renderInputs);
+    renderInputs();
+
+    function generateQR() {
+        qrCodeDiv.innerHTML = "";
+        let data = "";
+
+        switch (qrType.value) {
+            case "wifi":
+                data = `WIFI:T:${security.value};S:${ssid.value};P:${password.value};;`;
+                break;
+
+            case "email":
+                data = `mailto:${email.value}?subject=${subject.value}&body=${body.value}`;
+                break;
+
+            case "phone":
+                data = `tel:${phone.value}`;
+                break;
+
+            case "sms":
+                data = `sms:${smsNumber.value}?body=${smsMsg.value}`;
+                break;
+
+            case "whatsapp":
+                data = `https://wa.me/${waNumber.value}?text=${encodeURIComponent(waMsg.value)}`;
+                break;
+
+            case "upi":
+                data = `upi://pay?pa=${upiId.value}&am=${amount.value}&tn=${note.value}`;
+                break;
+
+            case "map":
+                data = `https://www.google.com/maps/search/?api=1&query=${location.value}`;
+                break;
+
+            case "calendar":
+                data = `BEGIN:VEVENT\nSUMMARY:${event.value}\nDTSTART:${date.value}\nEND:VEVENT`;
+                break;
+
+            default:
+                data = document.getElementById("data").value;
+        }
+
+        qr = new QRCode(qrCodeDiv, {
+            text: data,
+            width: 200,
+            height: 200
+        });
+    }
+
+    function downloadQR() {
+        const img = qrCodeDiv.querySelector("img");
+        if (!img) return alert("Generate QR first!");
+        const a = document.createElement("a");
+        a.href = img.src;
+        a.download = "qr-code.png";
+        a.click();
+    }
+</script>
+
 </body>
 </html>
